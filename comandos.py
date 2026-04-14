@@ -5,7 +5,9 @@ from acoes import (
     abrir_navegador,
     abrir_apple_music,
     dizer_hora,
-    dizer_data
+    dizer_data,
+    verificar_internet,
+    mostrar_bateria
 )
 
 from speaker import falar_erro
@@ -34,6 +36,16 @@ def entender_comando_data(comando):
     return any(p in comando for p in palavras)
 
 
+def entender_comando_internet(comando):
+    palavras = ["internet", "conexao", "conectado", "online"]
+    return any(p in comando for p in palavras)
+
+
+def entender_comando_bateria(comando):
+    palavras = ["bateria", "energia", "carga"]
+    return any(p in comando for p in palavras)
+
+
 def entender_comando_navegador(comando):
     verbos = ["abra", "abre", "abrir", "abriu", "abrindo", "a brir", "abreira"]
     alvos = ["navegador", "navega", "vivaldi", "browser"]
@@ -55,6 +67,12 @@ def executar_comando(comando):
 
     elif entender_comando_data(comando):
         dizer_data()
+
+    elif entender_comando_internet(comando):
+        verificar_internet()
+
+    elif entender_comando_bateria(comando):
+        mostrar_bateria()
 
     elif entender_comando_navegador(comando):
         abrir_navegador()
