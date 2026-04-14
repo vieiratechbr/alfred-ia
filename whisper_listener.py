@@ -1,7 +1,8 @@
-import os
+import ose
+from faster_whisper import WhisperModel
+import time
 import sounddevice as sd
 from scipy.io.wavfile import write
-from faster_whisper import WhisperModel
 
 model = None
 
@@ -17,7 +18,9 @@ def carregar_modelo():
     return model
 
 
-def gravar_audio(duracao=4, fs=16000):
+def gravar_audio(duracao=5, fs=16000):
+    print("Alfred: prepare-se para falar...")
+    time.sleep(1)
     print("Alfred: fale agora...")
 
     audio = sd.rec(int(duracao * fs), samplerate=fs, channels=1, dtype="int16")
