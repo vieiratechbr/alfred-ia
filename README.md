@@ -26,7 +26,7 @@ Criar uma assistente pessoal capaz de executar tarefas por comando de voz, evolu
 - [x] Definição do projeto
 - [x] Reconhecimento de voz
 - [x] Execução de comandos
-- [ ] Resposta por voz
+- [x] Resposta por voz
 - [ ] Melhorias de entendimento
 
 ## 👨‍💻 Autor
