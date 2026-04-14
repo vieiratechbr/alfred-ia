@@ -2,6 +2,7 @@ import subprocess
 import tempfile
 import random
 import winsound
+import re
 from pathlib import Path
 from datetime import datetime
 
@@ -11,12 +12,30 @@ PIPER_EXE = PIPER_DIR / "piper.exe"
 PIPER_MODEL = PIPER_DIR / "pt_BR-faber-medium.onnx"
 
 
+def ajustar_pronuncia(texto: str) -> str:
+    substituicoes = {
+        r"\bAlfred\b": "Alfredi",
+        r"\bVivaldi\b": "Vivaldi",
+        r"\bApple Music\b": "Épol Miuzic",
+        r"\bMusic\b": "Miuzic",
+        r"\bWindows\b": "Uíndous",
+    }
+
+    texto_ajustado = texto
+    for padrao, substituto in substituicoes.items():
+        texto_ajustado = re.sub(padrao, substituto, texto_ajustado, flags=re.IGNORECASE)
+
+    return texto_ajustado
+
+
 def falar(texto):
     print(f"Alfred: {texto}")
 
     wav_path = None
 
     try:
+        texto_para_fala = ajustar_pronuncia(texto)
+
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
             wav_path = f.name
 
@@ -35,7 +54,7 @@ def falar(texto):
             cwd=str(PIPER_DIR)
         )
 
-        _, stderr = processo.communicate(input=texto)
+        _, stderr = processo.communicate(input=texto_para_fala)
 
         if processo.returncode != 0:
             print("Erro no Piper:")
