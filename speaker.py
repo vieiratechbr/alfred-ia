@@ -3,6 +3,7 @@ import tempfile
 import random
 import winsound
 from pathlib import Path
+from datetime import datetime
 
 BASE_DIR = Path(__file__).resolve().parent
 PIPER_DIR = BASE_DIR / "piper"
@@ -41,11 +42,26 @@ def falar(texto):
             print(stderr)
             return
 
-        # Toca o áudio diretamente, sem abrir player externo
         winsound.PlaySound(wav_path, winsound.SND_FILENAME)
 
     except Exception as erro:
         print(f"Erro no Piper: {erro}")
+
+
+def obter_saudacao_por_horario():
+    hora_atual = datetime.now().hour
+
+    if hora_atual < 12:
+        return "Bom dia"
+    elif hora_atual < 18:
+        return "Boa tarde"
+    else:
+        return "Boa noite"
+
+
+def falar_saudacao_inicial():
+    saudacao = obter_saudacao_por_horario()
+    falar(f"{saudacao}. Tudo bem? Alfred iniciado e pronto para ajudar.")
 
 
 def falar_navegador():
