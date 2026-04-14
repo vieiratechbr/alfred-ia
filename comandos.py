@@ -10,6 +10,7 @@ from speaker import falar_erro, falar
 from intents import detectar_intencao
 from conversas import responder_conversa
 from contexto import salvar_contexto
+from ia_local import perguntar_ia_local
 
 
 def executar_comando(comando):
@@ -46,5 +47,10 @@ def executar_comando(comando):
             salvar_contexto("conversa", comando)
             falar(resposta)
         else:
-            print(f"Alfred: comando não reconhecido -> {comando}")
-            falar_erro()
+            resposta_ia = perguntar_ia_local(comando)
+
+            if resposta_ia:
+                salvar_contexto("ia_local", comando)
+                falar(resposta_ia)
+            else:
+                falar_erro()
