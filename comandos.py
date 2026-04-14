@@ -8,6 +8,7 @@ from acoes import (
 )
 from speaker import falar_erro
 from intents import detectar_intencao
+from conversas import responder_conversa
 
 
 def executar_comando(comando):
@@ -32,5 +33,11 @@ def executar_comando(comando):
         abrir_apple_music()
 
     else:
-        print(f"Alfred: comando não reconhecido -> {comando}")
-        falar_erro()
+        resposta = responder_conversa(comando)
+
+        if resposta:
+            from speaker import falar
+            falar(resposta)
+        else:
+            print(f"Alfred: comando não reconhecido -> {comando}")
+            falar_erro()
