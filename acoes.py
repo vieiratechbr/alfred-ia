@@ -14,7 +14,7 @@ def abrir_navegador():
 
 def abrir_apple_music():
     try:
-        os.startfile("shell:AppsFolder\\AppleInc.AppleMusicWin_nzyj5cx40ttqa!AppleMusic")
+        os.startfile(r"shell:AppsFolder\AppleInc.AppleMusicWin_nzyj5cx40ttqa!App")
         print("Alfred: abrindo o Apple Music.")
     except Exception as erro:
         print(f"Alfred: não consegui abrir o Apple Music. Erro: {erro}")
