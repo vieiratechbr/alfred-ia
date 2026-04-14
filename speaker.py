@@ -12,16 +12,29 @@ PIPER_EXE = PIPER_DIR / "piper.exe"
 PIPER_MODEL = PIPER_DIR / "pt_BR-faber-medium.onnx"
 
 
+import re
+
 def ajustar_pronuncia(texto: str) -> str:
     substituicoes = {
-        r"\bAlfred\b": "Alfredi",
+        r"\bAlfred\b": "Álfred",
         r"\bVivaldi\b": "Vivaldi",
         r"\bApple Music\b": "Épol Miuzic",
+        r"\bApple\b": "Épol",
         r"\bMusic\b": "Miuzic",
         r"\bWindows\b": "Uíndous",
+        r"\bChrome\b": "Crome",
+        r"\bYouTube\b": "Iútchubi",
+        r"\bGoogle\b": "Gugou",
+        r"\bSpotify\b": "Spotifai",
+        r"\bDiscord\b": "Discor",
+        r"\bPython\b": "Paiton",
+        r"\bJavaScript\b": "Javascipt",
+        r"\bNode\b": "Nôde",
+        r"\bVS Code\b": "V S Code",
     }
 
     texto_ajustado = texto
+
     for padrao, substituto in substituicoes.items():
         texto_ajustado = re.sub(padrao, substituto, texto_ajustado, flags=re.IGNORECASE)
 
@@ -110,4 +123,4 @@ def falar_erro():
         "Não reconheci o que você disse.",
         "Não consegui entender esse comando."
     ]
-    falar(random.choice(respostas))
+    falar(random.choice(respostas)) 
