@@ -44,6 +44,10 @@ def detectar_intencao(texto):
     if entender_abrir_google(comando):
         return {"intent": "abrir_google", "params": {}}
 
+    app = entender_abrir_app(comando)
+    if app:
+        return {"intent": "abrir_app", "params": {"app": app}}
+
     if entender_aumentar_volume(comando):
         return {"intent": "aumentar_volume", "params": {}}
 
@@ -105,6 +109,27 @@ def entender_abrir_google(comando):
         or "abra o navegador no google" in comando
         or "abra o google" in comando
     )
+
+
+def entender_abrir_app(comando):
+    padrao = r"(abra|abre|abrir) (.+)"
+    match = re.search(padrao, comando)
+
+    if match:
+        nome_app = match.group(2).strip()
+
+        if "youtube" in nome_app or "google" in nome_app:
+            return None
+
+        artigos = ["o ", "a ", "os ", "as "]
+        for artigo in artigos:
+            if nome_app.startswith(artigo):
+                nome_app = nome_app[len(artigo):].strip()
+                break
+
+        return nome_app
+
+    return None
 
 
 def extrair_pesquisa_youtube(comando):

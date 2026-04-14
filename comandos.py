@@ -1,4 +1,5 @@
 from acoes import (
+    abrir_aplicativo,
     abrir_navegador,
     abrir_youtube,
     abrir_google,
@@ -72,6 +73,10 @@ def executar_comando(comando):
     elif intencao == "pesquisar_youtube":
         salvar_contexto(intencao, comando)
         pesquisar_no_youtube(params["termo"])
+
+    elif intencao == "abrir_app":
+        salvar_contexto(intencao, comando)
+        abrir_aplicativo(params["app"])
 
     elif intencao == "aumentar_volume":
         salvar_contexto(intencao, comando)

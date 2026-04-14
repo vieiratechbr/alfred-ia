@@ -19,14 +19,41 @@ from speaker import (
 )
 
 
+CAMINHOS_PADRAO = [
+    r"C:\Program Files",
+    r"C:\Program Files (x86)",
+    os.path.expandvars(r"%LOCALAPPDATA%"),
+    os.path.expandvars(r"%APPDATA%"),
+]
+
+
+def encontrar_executavel(nome_app):
+    nome_app = nome_app.lower()
+
+    for pasta in CAMINHOS_PADRAO:
+        for root, dirs, files in os.walk(pasta):
+            for file in files:
+                if file.lower().endswith(".exe") and nome_app in file.lower():
+                    return os.path.join(root, file)
+    return None
+
+
+def abrir_aplicativo(nome_app):
+    caminho = encontrar_executavel(nome_app)
+
+    if caminho:
+        falar(f"Claro, senhor. Abrindo {nome_app}.")
+        subprocess.Popen([caminho])
+    else:
+        falar(f"Não encontrei o aplicativo {nome_app} no sistema.")
+
+
 def abrir_navegador():
     caminho_vivaldi = r"C:\Users\natha\AppData\Local\Vivaldi\Application\vivaldi.exe"
 
     if os.path.exists(caminho_vivaldi):
         falar_navegador()
         subprocess.Popen([caminho_vivaldi])
-    else:
-        print("Alfred: não encontrei o Vivaldi nesse caminho.")
 
 
 def abrir_site_no_navegador(url, nome_site):
@@ -35,8 +62,6 @@ def abrir_site_no_navegador(url, nome_site):
     if os.path.exists(caminho_vivaldi):
         falar(f"Claro, senhor. Abrindo {nome_site}.")
         subprocess.Popen([caminho_vivaldi, url])
-    else:
-        print("Alfred: não encontrei o Vivaldi nesse caminho.")
 
 
 def abrir_youtube():
@@ -52,10 +77,8 @@ def pesquisar_no_google(termo):
     url = f"https://www.google.com/search?q={quote_plus(termo)}"
 
     if os.path.exists(caminho_vivaldi):
-        falar(f"Claro, senhor. Pesquisando por {termo} no Google.")
+        falar(f"Pesquisando por {termo}.")
         subprocess.Popen([caminho_vivaldi, url])
-    else:
-        print("Alfred: não encontrei o Vivaldi nesse caminho.")
 
 
 def pesquisar_no_youtube(termo):
@@ -63,19 +86,16 @@ def pesquisar_no_youtube(termo):
     url = f"https://www.youtube.com/results?search_query={quote_plus(termo)}"
 
     if os.path.exists(caminho_vivaldi):
-        falar(f"Como desejar. Pesquisando por {termo} no YouTube.")
+        falar(f"Buscando {termo} no YouTube.")
         subprocess.Popen([caminho_vivaldi, url])
-    else:
-        print("Alfred: não encontrei o Vivaldi nesse caminho.")
 
 
 def abrir_apple_music():
     try:
         falar_music()
         os.startfile(r"shell:AppsFolder\AppleInc.AppleMusicWin_nzyj5cx40ttqa!App")
-    except Exception as erro:
-        print("Alfred: não consegui abrir o Apple Music.")
-        print(f"Erro técnico: {erro}")
+    except:
+        falar("Não consegui abrir o Apple Music.")
 
 
 def dizer_hora():
@@ -89,7 +109,7 @@ def dizer_data():
 
     dias_semana = [
         "segunda-feira", "terça-feira", "quarta-feira",
-        "quinta-feira", "sexta-feira", "sexta-feira", "sábado", "domingo"
+        "quinta-feira", "sexta-feira", "sábado", "domingo"
     ]
 
     meses = [
@@ -109,7 +129,7 @@ def verificar_internet():
     try:
         socket.create_connection(("8.8.8.8", 53), timeout=3)
         falar_internet_conectada()
-    except OSError:
+    except:
         falar_internet_desconectada()
 
 
@@ -125,33 +145,33 @@ def mostrar_bateria():
     falar_bateria(porcentagem, carregando)
 
 
-def aumentar_volume(passos=5):
-    for _ in range(passos):
+def aumentar_volume():
+    for _ in range(5):
         pyautogui.press("volumeup")
     falar("Aumentando o volume.")
 
 
-def diminuir_volume(passos=5):
-    for _ in range(passos):
+def diminuir_volume():
+    for _ in range(5):
         pyautogui.press("volumedown")
     falar("Diminuindo o volume.")
 
 
 def mutar_volume():
     pyautogui.press("volumemute")
-    falar("Alternando o modo mudo.")
+    falar("Modo mudo ativado.")
 
 
 def alternar_play_pause():
     pyautogui.press("playpause")
-    falar("Alternando a reprodução de mídia.")
+    falar("Controle de mídia alternado.")
 
 
 def proxima_musica():
     pyautogui.press("nexttrack")
-    falar("Pulando para a próxima faixa.")
+    falar("Próxima música.")
 
 
 def musica_anterior():
     pyautogui.press("prevtrack")
-    falar("Voltando para a faixa anterior.")
+    falar("Música anterior.")
