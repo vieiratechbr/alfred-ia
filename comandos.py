@@ -1,7 +1,15 @@
 import re
 import unicodedata
-from acoes import abrir_navegador, abrir_apple_music
+
+from acoes import (
+    abrir_navegador,
+    abrir_apple_music,
+    dizer_hora,
+    dizer_data
+)
+
 from speaker import falar_erro
+
 
 def normalizar_texto(texto):
     texto = texto.lower().strip()
@@ -16,17 +24,25 @@ def tem_fragmento(texto, fragmentos):
     return any(fragmento in texto for fragmento in fragmentos)
 
 
+def entender_comando_hora(comando):
+    palavras = ["hora", "horas"]
+    return any(p in comando for p in palavras)
+
+
+def entender_comando_data(comando):
+    palavras = ["data", "dia", "hoje"]
+    return any(p in comando for p in palavras)
+
+
 def entender_comando_navegador(comando):
     verbos = ["abra", "abre", "abrir", "abriu", "abrindo", "a brir", "abreira"]
     alvos = ["navegador", "navega", "vivaldi", "browser"]
-
     return tem_fragmento(comando, verbos) and tem_fragmento(comando, alvos)
 
 
 def entender_comando_apple_music(comando):
     verbos = ["abra", "abre", "abrir", "abram", "abriu", "abrindo", "a brir"]
     alvos = ["apple music", "music", "musica", "musica apple"]
-
     return tem_fragmento(comando, verbos) and tem_fragmento(comando, alvos)
 
 
@@ -34,7 +50,13 @@ def executar_comando(comando):
     comando_original = comando
     comando = normalizar_texto(comando)
 
-    if entender_comando_navegador(comando):
+    if entender_comando_hora(comando):
+        dizer_hora()
+
+    elif entender_comando_data(comando):
+        dizer_data()
+
+    elif entender_comando_navegador(comando):
         abrir_navegador()
 
     elif entender_comando_apple_music(comando):
