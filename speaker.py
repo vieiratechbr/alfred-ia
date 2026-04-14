@@ -12,8 +12,6 @@ PIPER_EXE = PIPER_DIR / "piper.exe"
 PIPER_MODEL = PIPER_DIR / "pt_BR-faber-medium.onnx"
 
 
-import re
-
 def ajustar_pronuncia(texto: str) -> str:
     substituicoes = {
         r"\bAlfred\b": "Álfred",
@@ -36,12 +34,17 @@ def ajustar_pronuncia(texto: str) -> str:
     texto_ajustado = texto
 
     for padrao, substituto in substituicoes.items():
-        texto_ajustado = re.sub(padrao, substituto, texto_ajustado, flags=re.IGNORECASE)
+        texto_ajustado = re.sub(
+            padrao,
+            substituto,
+            texto_ajustado,
+            flags=re.IGNORECASE
+        )
 
     return texto_ajustado
 
 
-def falar(texto):
+def falar(texto: str):
     print(f"Alfred: {texto}")
 
     wav_path = None
@@ -80,7 +83,7 @@ def falar(texto):
         print(f"Erro no Piper: {erro}")
 
 
-def obter_saudacao_por_horario():
+def obter_saudacao_por_horario() -> str:
     hora_atual = datetime.now().hour
 
     if hora_atual < 12:
@@ -93,34 +96,41 @@ def obter_saudacao_por_horario():
 
 def falar_saudacao_inicial():
     saudacao = obter_saudacao_por_horario()
-    falar(f"{saudacao}. Tudo bem? Alfred iniciado e pronto para ajudar.")
+
+    frases = [
+        f"{saudacao}. Alfred online e à sua disposição.",
+        f"{saudacao}. Estou pronto para ajudar.",
+        f"{saudacao}. Sistemas ativos. Como posso ajudar?",
+    ]
+
+    falar(random.choice(frases))
 
 
 def falar_navegador():
     respostas = [
-        "Abrindo o navegador.",
-        "Já estou abrindo o Vivaldi.",
-        "Navegador sendo iniciado.",
-        "Claro, abrindo o navegador agora."
+        "Claro, senhor. Abrindo o navegador.",
+        "Como desejar. Já estou abrindo o navegador.",
+        "Imediatamente. O navegador será iniciado.",
+        "Perfeitamente. Abrindo o Vivaldi agora."
     ]
     falar(random.choice(respostas))
 
 
 def falar_music():
     respostas = [
-        "Abrindo o Apple Music.",
-        "Iniciando sua música.",
-        "Apple Music pronto para uso.",
-        "Já estou abrindo o Apple Music."
+        "Com prazer. Abrindo o reprodutor de música.",
+        "Já estou iniciando sua música, senhor.",
+        "Perfeitamente. Preparando o Apple Music.",
+        "Como desejar. Música iniciando agora."
     ]
     falar(random.choice(respostas))
 
 
 def falar_erro():
     respostas = [
-        "Desculpe, não entendi o comando.",
-        "Pode repetir, por favor?",
-        "Não reconheci o que você disse.",
-        "Não consegui entender esse comando."
+        "Peço desculpas, senhor. Não compreendi o comando.",
+        "Receio não ter entendido. Poderia repetir?",
+        "Desculpe, não consegui interpretar o pedido.",
+        "Não reconheci o comando. Pode tentar novamente?"
     ]
-    falar(random.choice(respostas)) 
+    falar(random.choice(respostas))
