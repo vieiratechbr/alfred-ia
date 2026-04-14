@@ -1,5 +1,5 @@
 from comandos import executar_comando
-from listener import ouvir_comando
+from whisper_listener import ouvir_comando
 
 
 def main():
