@@ -1,0 +1,12 @@
+{
+  "discord": {
+    "tipo": "windows_app",
+    "nome": "Discord",
+    "app_id": "com.squirrel.Discord.Discord"
+  },
+  "calculadora": {
+    "tipo": "windows_app",
+    "nome": "Calculadora",
+    "app_id": "Microsoft.WindowsCalculator_8wekyb3d8bbwe!App"
+  }
+}
