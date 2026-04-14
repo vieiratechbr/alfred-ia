@@ -24,8 +24,8 @@ Criar uma assistente pessoal capaz de executar tarefas por comando de voz, evolu
 ## 📈 Roadmap
 
 - [x] Definição do projeto
-- [ ] Reconhecimento de voz
-- [ ] Execução de comandos
+- [x] Reconhecimento de voz
+- [x] Execução de comandos
 - [ ] Resposta por voz
 - [ ] Melhorias de entendimento
 
