@@ -4,7 +4,16 @@ import socket
 import psutil
 from datetime import datetime
 
-from speaker import falar_navegador, falar_music, falar
+from speaker import (
+    falar_navegador,
+    falar_music,
+    falar_hora,
+    falar_data,
+    falar_internet_conectada,
+    falar_internet_desconectada,
+    falar_bateria,
+    falar_bateria_indisponivel
+)
 
 
 def abrir_navegador():
@@ -29,7 +38,7 @@ def abrir_apple_music():
 def dizer_hora():
     agora = datetime.now()
     hora = agora.strftime("%H:%M")
-    falar(f"Agora são {hora}.")
+    falar_hora(hora)
 
 
 def dizer_data():
@@ -49,28 +58,25 @@ def dizer_data():
     dia = agora.day
     mes = meses[agora.month - 1]
 
-    falar(f"Hoje é {dia_semana}, dia {dia} de {mes}.")
+    data_texto = f"{dia_semana}, dia {dia} de {mes}"
+    falar_data(data_texto)
 
 
 def verificar_internet():
     try:
         socket.create_connection(("8.8.8.8", 53), timeout=3)
-        falar("A conexão com a internet está ativa.")
+        falar_internet_conectada()
     except OSError:
-        falar("Não detectei conexão com a internet.")
+        falar_internet_desconectada()
 
 
 def mostrar_bateria():
     bateria = psutil.sensors_battery()
 
     if bateria is None:
-        falar("Não consegui acessar informações da bateria.")
+        falar_bateria_indisponivel()
         return
 
     porcentagem = int(bateria.percent)
     carregando = bateria.power_plugged
-
-    if carregando:
-        falar(f"A bateria está em {porcentagem} por cento e está carregando.")
-    else:
-        falar(f"A bateria está em {porcentagem} por cento.")
+    falar_bateria(porcentagem, carregando)

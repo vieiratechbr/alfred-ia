@@ -15,7 +15,6 @@ PIPER_MODEL = PIPER_DIR / "pt_BR-faber-medium.onnx"
 def ajustar_pronuncia(texto: str) -> str:
     substituicoes = {
         r"\bAlfred\b": "Álfred",
-        r"\bVivaldi\b": "Vivaldi",
         r"\bApple Music\b": "Épol Miuzic",
         r"\bApple\b": "Épol",
         r"\bMusic\b": "Miuzic",
@@ -34,17 +33,12 @@ def ajustar_pronuncia(texto: str) -> str:
     texto_ajustado = texto
 
     for padrao, substituto in substituicoes.items():
-        texto_ajustado = re.sub(
-            padrao,
-            substituto,
-            texto_ajustado,
-            flags=re.IGNORECASE
-        )
+        texto_ajustado = re.sub(padrao, substituto, texto_ajustado, flags=re.IGNORECASE)
 
     return texto_ajustado
 
 
-def falar(texto: str):
+def falar(texto):
     print(f"Alfred: {texto}")
 
     wav_path = None
@@ -83,7 +77,7 @@ def falar(texto: str):
         print(f"Erro no Piper: {erro}")
 
 
-def obter_saudacao_por_horario() -> str:
+def obter_saudacao_por_horario():
     hora_atual = datetime.now().hour
 
     if hora_atual < 12:
@@ -100,7 +94,7 @@ def falar_saudacao_inicial():
     frases = [
         f"{saudacao}. Alfred online e à sua disposição.",
         f"{saudacao}. Estou pronto para ajudar.",
-        f"{saudacao}. Sistemas ativos. Como posso ajudar?",
+        f"{saudacao}. Sistemas ativos. Como posso ajudar?"
     ]
 
     falar(random.choice(frases))
@@ -122,6 +116,72 @@ def falar_music():
         "Já estou iniciando sua música, senhor.",
         "Perfeitamente. Preparando o Apple Music.",
         "Como desejar. Música iniciando agora."
+    ]
+    falar(random.choice(respostas))
+
+
+def falar_hora(hora):
+    respostas = [
+        f"Claro, senhor. Agora são {hora}.",
+        f"Neste momento, são {hora}.",
+        f"Acabei de verificar. Agora são {hora}.",
+        f"Agora são exatamente {hora}."
+    ]
+    falar(random.choice(respostas))
+
+
+def falar_data(data_texto):
+    respostas = [
+        f"Hoje é {data_texto}.",
+        f"Claro. Hoje é {data_texto}.",
+        f"Acabei de verificar. Hoje é {data_texto}.",
+        f"A data de hoje é {data_texto}."
+    ]
+    falar(random.choice(respostas))
+
+
+def falar_internet_conectada():
+    respostas = [
+        "Sim, senhor. A conexão com a internet está ativa.",
+        "Tudo certo. A internet está funcionando normalmente.",
+        "Acabei de verificar. A conexão está ativa.",
+        "Sim. Há acesso à internet neste momento."
+    ]
+    falar(random.choice(respostas))
+
+
+def falar_internet_desconectada():
+    respostas = [
+        "No momento, não detectei conexão com a internet.",
+        "Receio que a conexão com a internet esteja indisponível.",
+        "Acabei de verificar e não há acesso à internet.",
+        "Não detectei internet ativa neste momento."
+    ]
+    falar(random.choice(respostas))
+
+
+def falar_bateria(porcentagem, carregando):
+    if carregando:
+        respostas = [
+            f"A bateria está em {porcentagem} por cento e o equipamento está carregando.",
+            f"No momento, a bateria está em {porcentagem} por cento e conectada à energia.",
+            f"A carga atual é de {porcentagem} por cento, e a bateria está carregando."
+        ]
+    else:
+        respostas = [
+            f"A bateria está em {porcentagem} por cento.",
+            f"No momento, restam {porcentagem} por cento de bateria.",
+            f"A carga atual da bateria é de {porcentagem} por cento."
+        ]
+
+    falar(random.choice(respostas))
+
+
+def falar_bateria_indisponivel():
+    respostas = [
+        "Não consegui acessar as informações da bateria.",
+        "Receio que eu não consiga verificar a bateria neste momento.",
+        "Não foi possível obter os dados da bateria agora."
     ]
     falar(random.choice(respostas))
 
