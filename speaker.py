@@ -1,21 +1,47 @@
-import pyttsx3
+import subprocess
+import tempfile
+import os
 import random
+from pathlib import Path
+
+BASE_DIR = Path(__file__).resolve().parent
+PIPER_EXE = BASE_DIR / "piper" / "piper.exe"
+PIPER_MODEL = BASE_DIR / "piper" / "pt_BR-faber-medium.onnx"
 
 
 def falar(texto):
     print(f"Alfred: {texto}")
 
     try:
-        engine = pyttsx3.init()
-        engine.setProperty("rate", 180)
-        engine.setProperty("volume", 1.0)
+        with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
+            wav_path = f.name
 
-        engine.say(texto)
-        engine.runAndWait()
-        engine.stop()
+        comando = [
+            str(PIPER_EXE),
+            "-m", str(PIPER_MODEL),
+            "-f", wav_path
+        ]
+
+        processo = subprocess.Popen(
+            comando,
+            stdin=subprocess.PIPE,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+            text=True,
+            cwd=str(BASE_DIR / "piper")
+        )
+
+        stdout, stderr = processo.communicate(input=texto)
+
+        if processo.returncode != 0:
+            print("Erro no Piper:")
+            print(stderr)
+            return
+
+        os.startfile(wav_path)
 
     except Exception as erro:
-        print(f"Erro na fala do Alfred: {erro}")
+        print(f"Erro no Piper: {erro}")
 
 
 def falar_navegador():

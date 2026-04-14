@@ -1,6 +1,6 @@
 import os
 import subprocess
-from speaker import falar_navegador, falar_music, falar_erro
+from speaker import falar_navegador, falar_music
 
 
 def abrir_navegador():
@@ -10,7 +10,7 @@ def abrir_navegador():
         subprocess.Popen([caminho_vivaldi])
         falar_navegador()
     else:
-        falar("Não encontrei o Vivaldi nesse caminho.")
+        print("Alfred: não encontrei o Vivaldi nesse caminho.")
 
 
 def abrir_apple_music():
@@ -18,5 +18,5 @@ def abrir_apple_music():
         os.startfile(r"shell:AppsFolder\AppleInc.AppleMusicWin_nzyj5cx40ttqa!App")
         falar_music()
     except Exception as erro:
-        falar("Não consegui abrir o Apple Music.")
-        print(f"Erro técnico: {erro}")  
+        print("Alfred: não consegui abrir o Apple Music.")
+        print(f"Erro técnico: {erro}")
