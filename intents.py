@@ -1,4 +1,5 @@
 from utils import normalizar_texto, tem_fragmento
+from contexto import obter_ultima_intencao
 
 
 INTENT_MAP = {
@@ -49,5 +50,40 @@ def detectar_intencao(texto):
         comando, INTENT_MAP["abrir_apple_music"]["alvos"]
     ):
         return "abrir_apple_music"
+
+    intencao_contextual = detectar_intencao_contextual(comando)
+    if intencao_contextual:
+        return intencao_contextual
+
+    return None
+
+
+def detectar_intencao_contextual(comando):
+    ultima_intencao = obter_ultima_intencao()
+
+    if not ultima_intencao:
+        return None
+
+    if comando in ["e a data", "e data", "qual a data"]:
+        return "data"
+
+    if comando in ["e a hora", "e hora", "qual a hora"]:
+        return "hora"
+
+    if comando in ["e a bateria", "e bateria", "como ela esta"]:
+        return "bateria"
+
+    if comando in ["e a internet", "e internet", "tem conexao", "esta conectado"]:
+        return "internet"
+
+    if comando in ["e a musica", "e a musica agora", "abra a musica"]:
+        return "abrir_apple_music"
+
+    if comando in ["e o navegador", "abra o navegador", "abra o vivaldi"]:
+        return "abrir_navegador"
+
+    if ultima_intencao in ["hora", "data", "internet", "bateria"]:
+        if comando in ["e agora", "e depois", "e tambem"]:
+            return ultima_intencao
 
     return None
