@@ -1,6 +1,7 @@
 import re
 import unicodedata
 from acoes import abrir_navegador, abrir_apple_music
+from speaker import falar
 
 
 def normalizar_texto(texto):
@@ -17,25 +18,15 @@ def tem_fragmento(texto, fragmentos):
 
 
 def entender_comando_navegador(comando):
-    verbos = [
-        "abra", "abre", "abrir", "abriu", "abrindo",
-        "a brir", "abreira"
-    ]
-    alvos = [
-        "navegador", "navega", "vivaldi", "browser"
-    ]
+    verbos = ["abra", "abre", "abrir", "abriu", "abrindo", "a brir", "abreira"]
+    alvos = ["navegador", "navega", "vivaldi", "browser"]
 
     return tem_fragmento(comando, verbos) and tem_fragmento(comando, alvos)
 
 
 def entender_comando_apple_music(comando):
-    verbos = [
-        "abra", "abre", "abrir", "abram", "abriu", "abrindo",
-        "a brir"
-    ]
-    alvos = [
-        "apple music", "music", "musica", "musica apple"
-    ]
+    verbos = ["abra", "abre", "abrir", "abram", "abriu", "abrindo", "a brir"]
+    alvos = ["apple music", "music", "musica", "musica apple"]
 
     return tem_fragmento(comando, verbos) and tem_fragmento(comando, alvos)
 
@@ -52,3 +43,4 @@ def executar_comando(comando):
 
     else:
         print(f"Alfred: comando não reconhecido -> {comando_original}")
+        falar("Desculpe, não reconheci esse comando.")
