@@ -1,4 +1,4 @@
-import ose
+import os
 from faster_whisper import WhisperModel
 import time
 import sounddevice as sd
