@@ -1,16 +1,13 @@
 from comandos import executar_comando
+from listener import ouvir_comando
 
 
 def main():
-    print("=== Alfred V1 ===")
-    print("Digite um comando para testar.")
-    print("Exemplos:")
-    print("- abra o navegador")
-    print("- abra o Apple Music")
-    print()
+    print("=== Alfred V1 (voz) ===")
 
-    comando = input("Você: ")
-    executar_comando(comando)
+    while True:
+        comando = ouvir_comando()
+        executar_comando(comando)
 
 
 if __name__ == "__main__":
