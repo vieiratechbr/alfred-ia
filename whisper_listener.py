@@ -1,46 +1,45 @@
-import os
+import sounddevice as sd
+import numpy as np
 from faster_whisper import WhisperModel
 import time
-import sounddevice as sd
-from scipy.io.wavfile import write
 
-model = None
+modelo = None
 
 
 def carregar_modelo():
-    global model
+    global modelo
 
-    if model is None:
-        caminho_modelo = os.path.join("models", "faster-whisper-tiny")
-        print("Alfred: carregando modelo local de voz...")
-        model = WhisperModel(caminho_modelo, compute_type="int8")
+    if modelo is None:
+        print("Alfred: carregando modelo de voz...")
+        modelo = WhisperModel("small", compute_type="int8")
 
-    return model
-
-
-def gravar_audio(duracao=5, fs=16000):
-    print("Alfred: prepare-se para falar...")
-    time.sleep(1)
-    print("Alfred: fale agora...")
-
-    audio = sd.rec(int(duracao * fs), samplerate=fs, channels=1, dtype="int16")
-    sd.wait()
-
-    write("audio.wav", fs, audio)
-    return "audio.wav"
+    return modelo
 
 
 def ouvir_comando():
     modelo = carregar_modelo()
-    arquivo = gravar_audio()
 
-    segments, _ = modelo.transcribe(arquivo, language="pt")
+    fs = 16000
+    duracao = 4
+
+    print("Alfred: prepare-se para falar...")
+    time.sleep(0.5)
+
+    print("Alfred: fale agora...")
+    audio = sd.rec(int(duracao * fs), samplerate=fs, channels=1, dtype="float32")
+    sd.wait()
+
+    audio = np.squeeze(audio)
+
+    segmentos, _ = modelo.transcribe(audio, language="pt")
 
     texto = ""
-    for segment in segments:
-        texto += segment.text
+
+    for segmento in segmentos:
+        texto += segmento.text
 
     texto = texto.strip().lower()
+
     print(f"Você disse: {texto}")
 
     return texto
