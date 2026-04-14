@@ -19,4 +19,4 @@ def abrir_apple_music():
         falar("Abrindo o Apple Music.")
     except Exception as erro:
         falar("Não consegui abrir o Apple Music.")
-        print(f"Erro técnico: {erro}")
+        print(f"Erro técnico: {erro}")  
