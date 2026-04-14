@@ -1,16 +1,19 @@
 import subprocess
 import tempfile
-import os
 import random
+import winsound
 from pathlib import Path
 
 BASE_DIR = Path(__file__).resolve().parent
-PIPER_EXE = BASE_DIR / "piper" / "piper.exe"
-PIPER_MODEL = BASE_DIR / "piper" / "pt_BR-faber-medium.onnx"
+PIPER_DIR = BASE_DIR / "piper"
+PIPER_EXE = PIPER_DIR / "piper.exe"
+PIPER_MODEL = PIPER_DIR / "pt_BR-faber-medium.onnx"
 
 
 def falar(texto):
     print(f"Alfred: {texto}")
+
+    wav_path = None
 
     try:
         with tempfile.NamedTemporaryFile(delete=False, suffix=".wav") as f:
@@ -28,17 +31,18 @@ def falar(texto):
             stdout=subprocess.PIPE,
             stderr=subprocess.PIPE,
             text=True,
-            cwd=str(BASE_DIR / "piper")
+            cwd=str(PIPER_DIR)
         )
 
-        stdout, stderr = processo.communicate(input=texto)
+        _, stderr = processo.communicate(input=texto)
 
         if processo.returncode != 0:
             print("Erro no Piper:")
             print(stderr)
             return
 
-        os.startfile(wav_path)
+        # Toca o áudio diretamente, sem abrir player externo
+        winsound.PlaySound(wav_path, winsound.SND_FILENAME)
 
     except Exception as erro:
         print(f"Erro no Piper: {erro}")
