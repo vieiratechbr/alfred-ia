@@ -8,7 +8,13 @@ from acoes import (
     dizer_hora,
     dizer_data,
     verificar_internet,
-    mostrar_bateria
+    mostrar_bateria,
+    aumentar_volume,
+    diminuir_volume,
+    mutar_volume,
+    alternar_play_pause,
+    proxima_musica,
+    musica_anterior
 )
 from speaker import falar_erro, falar
 from intents import detectar_intencao
@@ -66,6 +72,30 @@ def executar_comando(comando):
     elif intencao == "pesquisar_youtube":
         salvar_contexto(intencao, comando)
         pesquisar_no_youtube(params["termo"])
+
+    elif intencao == "aumentar_volume":
+        salvar_contexto(intencao, comando)
+        aumentar_volume()
+
+    elif intencao == "diminuir_volume":
+        salvar_contexto(intencao, comando)
+        diminuir_volume()
+
+    elif intencao == "mutar_volume":
+        salvar_contexto(intencao, comando)
+        mutar_volume()
+
+    elif intencao == "alternar_play_pause":
+        salvar_contexto(intencao, comando)
+        alternar_play_pause()
+
+    elif intencao == "proxima_musica":
+        salvar_contexto(intencao, comando)
+        proxima_musica()
+
+    elif intencao == "musica_anterior":
+        salvar_contexto(intencao, comando)
+        musica_anterior()
 
     else:
         resposta = responder_conversa(comando)

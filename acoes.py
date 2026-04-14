@@ -2,6 +2,7 @@ import os
 import subprocess
 import socket
 import psutil
+import pyautogui
 from datetime import datetime
 from urllib.parse import quote_plus
 
@@ -88,7 +89,7 @@ def dizer_data():
 
     dias_semana = [
         "segunda-feira", "terça-feira", "quarta-feira",
-        "quinta-feira", "sexta-feira", "sábado", "domingo"
+        "quinta-feira", "sexta-feira", "sexta-feira", "sábado", "domingo"
     ]
 
     meses = [
@@ -122,3 +123,35 @@ def mostrar_bateria():
     porcentagem = int(bateria.percent)
     carregando = bateria.power_plugged
     falar_bateria(porcentagem, carregando)
+
+
+def aumentar_volume(passos=5):
+    for _ in range(passos):
+        pyautogui.press("volumeup")
+    falar("Aumentando o volume.")
+
+
+def diminuir_volume(passos=5):
+    for _ in range(passos):
+        pyautogui.press("volumedown")
+    falar("Diminuindo o volume.")
+
+
+def mutar_volume():
+    pyautogui.press("volumemute")
+    falar("Alternando o modo mudo.")
+
+
+def alternar_play_pause():
+    pyautogui.press("playpause")
+    falar("Alternando a reprodução de mídia.")
+
+
+def proxima_musica():
+    pyautogui.press("nexttrack")
+    falar("Pulando para a próxima faixa.")
+
+
+def musica_anterior():
+    pyautogui.press("prevtrack")
+    falar("Voltando para a faixa anterior.")

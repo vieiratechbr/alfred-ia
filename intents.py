@@ -44,6 +44,24 @@ def detectar_intencao(texto):
     if entender_abrir_google(comando):
         return {"intent": "abrir_google", "params": {}}
 
+    if entender_aumentar_volume(comando):
+        return {"intent": "aumentar_volume", "params": {}}
+
+    if entender_diminuir_volume(comando):
+        return {"intent": "diminuir_volume", "params": {}}
+
+    if entender_mutar_volume(comando):
+        return {"intent": "mutar_volume", "params": {}}
+
+    if entender_play_pause(comando):
+        return {"intent": "alternar_play_pause", "params": {}}
+
+    if entender_proxima_musica(comando):
+        return {"intent": "proxima_musica", "params": {}}
+
+    if entender_musica_anterior(comando):
+        return {"intent": "musica_anterior", "params": {}}
+
     if any(p in comando for p in INTENT_MAP["hora"]["palavras"]):
         return {"intent": "hora", "params": {}}
 
@@ -121,6 +139,65 @@ def extrair_pesquisa_google(comando):
                 return termo
 
     return None
+
+
+def entender_aumentar_volume(comando):
+    return any(frase in comando for frase in [
+        "aumente o volume",
+        "aumentar volume",
+        "aumenta o volume",
+        "mais volume",
+        "deixe o volume mais alto"
+    ])
+
+
+def entender_diminuir_volume(comando):
+    return any(frase in comando for frase in [
+        "diminua o volume",
+        "diminuir volume",
+        "diminui o volume",
+        "menos volume",
+        "deixe o volume mais baixo"
+    ])
+
+
+def entender_mutar_volume(comando):
+    return any(frase in comando for frase in [
+        "mute o volume",
+        "mutar volume",
+        "silencie o volume",
+        "tire o som",
+        "deixe sem som"
+    ])
+
+
+def entender_play_pause(comando):
+    return any(frase in comando for frase in [
+        "pause a musica",
+        "pausar musica",
+        "retome a musica",
+        "continue a musica",
+        "play pause",
+        "pause a musica agora"
+    ])
+
+
+def entender_proxima_musica(comando):
+    return any(frase in comando for frase in [
+        "proxima musica",
+        "pule a musica",
+        "proxima faixa",
+        "avance a musica"
+    ])
+
+
+def entender_musica_anterior(comando):
+    return any(frase in comando for frase in [
+        "musica anterior",
+        "faixa anterior",
+        "volte a musica",
+        "voltar musica"
+    ])
 
 
 def detectar_intencao_contextual(comando):
