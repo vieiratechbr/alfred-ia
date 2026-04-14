@@ -1,8 +1,7 @@
 import re
 import unicodedata
 from acoes import abrir_navegador, abrir_apple_music
-from speaker import falar
-
+from speaker import falar_erro
 
 def normalizar_texto(texto):
     texto = texto.lower().strip()
@@ -43,4 +42,4 @@ def executar_comando(comando):
 
     else:
         print(f"Alfred: comando não reconhecido -> {comando_original}")
-        falar("Desculpe, não reconheci esse comando.")
+        falar_erro()
