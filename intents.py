@@ -1,3 +1,4 @@
+import re
 from utils import normalizar_texto, tem_fragmento
 from contexto import obter_ultima_intencao
 
@@ -29,31 +30,95 @@ INTENT_MAP = {
 def detectar_intencao(texto):
     comando = normalizar_texto(texto)
 
+    pesquisa_youtube = extrair_pesquisa_youtube(comando)
+    if pesquisa_youtube:
+        return {"intent": "pesquisar_youtube", "params": {"termo": pesquisa_youtube}}
+
+    pesquisa_google = extrair_pesquisa_google(comando)
+    if pesquisa_google:
+        return {"intent": "pesquisar_google", "params": {"termo": pesquisa_google}}
+
+    if entender_abrir_youtube(comando):
+        return {"intent": "abrir_youtube", "params": {}}
+
+    if entender_abrir_google(comando):
+        return {"intent": "abrir_google", "params": {}}
+
     if any(p in comando for p in INTENT_MAP["hora"]["palavras"]):
-        return "hora"
+        return {"intent": "hora", "params": {}}
 
     if any(p in comando for p in INTENT_MAP["data"]["palavras"]):
-        return "data"
+        return {"intent": "data", "params": {}}
 
     if any(p in comando for p in INTENT_MAP["internet"]["palavras"]):
-        return "internet"
+        return {"intent": "internet", "params": {}}
 
     if any(p in comando for p in INTENT_MAP["bateria"]["palavras"]):
-        return "bateria"
+        return {"intent": "bateria", "params": {}}
 
     if tem_fragmento(comando, INTENT_MAP["abrir_navegador"]["verbos"]) and tem_fragmento(
         comando, INTENT_MAP["abrir_navegador"]["alvos"]
     ):
-        return "abrir_navegador"
+        return {"intent": "abrir_navegador", "params": {}}
 
     if tem_fragmento(comando, INTENT_MAP["abrir_apple_music"]["verbos"]) and tem_fragmento(
         comando, INTENT_MAP["abrir_apple_music"]["alvos"]
     ):
-        return "abrir_apple_music"
+        return {"intent": "abrir_apple_music", "params": {}}
 
     intencao_contextual = detectar_intencao_contextual(comando)
     if intencao_contextual:
-        return intencao_contextual
+        return {"intent": intencao_contextual, "params": {}}
+
+    return None
+
+
+def entender_abrir_youtube(comando):
+    return (
+        ("youtube" in comando and any(v in comando for v in ["abra", "abre", "abrir"]))
+        or "abra o navegador no youtube" in comando
+        or "abra o youtube" in comando
+    )
+
+
+def entender_abrir_google(comando):
+    return (
+        ("google" in comando and any(v in comando for v in ["abra", "abre", "abrir"]))
+        or "abra o navegador no google" in comando
+        or "abra o google" in comando
+    )
+
+
+def extrair_pesquisa_youtube(comando):
+    padroes = [
+        r"pesquise por (.+?) no youtube",
+        r"procure por (.+?) no youtube",
+        r"busque por (.+?) no youtube",
+        r"pesquisar por (.+?) no youtube"
+    ]
+
+    for padrao in padroes:
+        match = re.search(padrao, comando)
+        if match:
+            return match.group(1).strip()
+
+    return None
+
+
+def extrair_pesquisa_google(comando):
+    padroes = [
+        r"pesquise por (.+)",
+        r"procure por (.+)",
+        r"busque por (.+)",
+        r"pesquisar por (.+)"
+    ]
+
+    for padrao in padroes:
+        match = re.search(padrao, comando)
+        if match:
+            termo = match.group(1).strip()
+            if not termo.endswith("no youtube"):
+                return termo
 
     return None
 

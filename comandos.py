@@ -1,5 +1,9 @@
 from acoes import (
     abrir_navegador,
+    abrir_youtube,
+    abrir_google,
+    pesquisar_no_google,
+    pesquisar_no_youtube,
     abrir_apple_music,
     dizer_hora,
     dizer_data,
@@ -14,7 +18,14 @@ from ia_local import perguntar_ia_local
 
 
 def executar_comando(comando):
-    intencao = detectar_intencao(comando)
+    resultado = detectar_intencao(comando)
+
+    if resultado:
+        intencao = resultado["intent"]
+        params = resultado.get("params", {})
+    else:
+        intencao = None
+        params = {}
 
     if intencao == "hora":
         salvar_contexto(intencao, comando)
@@ -39,6 +50,22 @@ def executar_comando(comando):
     elif intencao == "abrir_apple_music":
         salvar_contexto(intencao, comando)
         abrir_apple_music()
+
+    elif intencao == "abrir_youtube":
+        salvar_contexto(intencao, comando)
+        abrir_youtube()
+
+    elif intencao == "abrir_google":
+        salvar_contexto(intencao, comando)
+        abrir_google()
+
+    elif intencao == "pesquisar_google":
+        salvar_contexto(intencao, comando)
+        pesquisar_no_google(params["termo"])
+
+    elif intencao == "pesquisar_youtube":
+        salvar_contexto(intencao, comando)
+        pesquisar_no_youtube(params["termo"])
 
     else:
         resposta = responder_conversa(comando)

@@ -3,6 +3,7 @@ import subprocess
 import socket
 import psutil
 from datetime import datetime
+from urllib.parse import quote_plus
 
 from speaker import (
     falar_navegador,
@@ -12,7 +13,8 @@ from speaker import (
     falar_internet_conectada,
     falar_internet_desconectada,
     falar_bateria,
-    falar_bateria_indisponivel
+    falar_bateria_indisponivel,
+    falar
 )
 
 
@@ -22,6 +24,46 @@ def abrir_navegador():
     if os.path.exists(caminho_vivaldi):
         falar_navegador()
         subprocess.Popen([caminho_vivaldi])
+    else:
+        print("Alfred: não encontrei o Vivaldi nesse caminho.")
+
+
+def abrir_site_no_navegador(url, nome_site):
+    caminho_vivaldi = r"C:\Users\natha\AppData\Local\Vivaldi\Application\vivaldi.exe"
+
+    if os.path.exists(caminho_vivaldi):
+        falar(f"Claro, senhor. Abrindo {nome_site}.")
+        subprocess.Popen([caminho_vivaldi, url])
+    else:
+        print("Alfred: não encontrei o Vivaldi nesse caminho.")
+
+
+def abrir_youtube():
+    abrir_site_no_navegador("https://www.youtube.com", "o YouTube")
+
+
+def abrir_google():
+    abrir_site_no_navegador("https://www.google.com", "o Google")
+
+
+def pesquisar_no_google(termo):
+    caminho_vivaldi = r"C:\Users\natha\AppData\Local\Vivaldi\Application\vivaldi.exe"
+    url = f"https://www.google.com/search?q={quote_plus(termo)}"
+
+    if os.path.exists(caminho_vivaldi):
+        falar(f"Claro, senhor. Pesquisando por {termo} no Google.")
+        subprocess.Popen([caminho_vivaldi, url])
+    else:
+        print("Alfred: não encontrei o Vivaldi nesse caminho.")
+
+
+def pesquisar_no_youtube(termo):
+    caminho_vivaldi = r"C:\Users\natha\AppData\Local\Vivaldi\Application\vivaldi.exe"
+    url = f"https://www.youtube.com/results?search_query={quote_plus(termo)}"
+
+    if os.path.exists(caminho_vivaldi):
+        falar(f"Como desejar. Pesquisando por {termo} no YouTube.")
+        subprocess.Popen([caminho_vivaldi, url])
     else:
         print("Alfred: não encontrei o Vivaldi nesse caminho.")
 
